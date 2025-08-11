@@ -1,0 +1,12 @@
+{
+  "name": "AI Data Insight API",
+  "forwardPorts": [8000],
+  "postCreateCommand": "pip install -r flask_data_insight_api/requirements.txt || true",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/codespaces-blank/.venv/bin/python"
+      }
+    }
+  }
+}

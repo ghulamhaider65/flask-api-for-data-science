@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="panel">
+  <h2>Upload CSV</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" required />
+    <label><input type="checkbox" name="run_model" /> Train model (only if your CSV has a <b>target</b> column)</label>
+    <button type="submit">Process</button>
+  </form>
+  <div style="margin-top:0.5rem; color:#555; font-size:0.98rem;">
+    <b>Tip:</b> To train a model, your CSV must have a column named <code>target</code> (case-sensitive). Otherwise, only insights and plots will be shown.
+  </div>
+  {% if error %}<div class="error">Error: {{ error }}</div>{% endif %}
+</section>
+
+{% if filename %}
+<section class="panel">
+  <h2>Results for {{ filename }}</h2>
+  {% if insights %}
+    <div class="grid">
+      <div>
+        <h3>Dataset Summary</h3>
+        <ul>
+          <li>Rows: {{ insights.rows }}</li>
+          <li>Columns: {{ insights.columns }}</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Dtypes</h3>
+        <table>
+          <tr><th>Column</th><th>Type</th><th>Nulls</th></tr>
+          {% for col, dtype in insights.dtypes.items() %}
+            <tr>
+              <td>{{ col }}</td>
+              <td>{{ dtype }}</td>
+              <td>{{ insights.null_counts[col] }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if model_result %}
+    <h3>Model Result</h3>
+    {% if model_result.trained %}
+      <p><strong>Accuracy:</strong> {{ '%.4f'|format(model_result.accuracy) }}</p>
+      <p>Rows: {{ model_result.n_rows }} | Features: {{ model_result.n_features }}</p>
+    {% else %}
+      <p class="warn">Model not trained: {{ model_result.reason }}</p>
+    {% endif %}
+  {% endif %}
+
+  {% if plot_urls %}
+    <h3>Plots</h3>
+    <div class="plots">
+      {% for p in plot_urls %}
+        <figure>
+          <img src="{{ p }}" alt="Plot {{ loop.index }}" loading="lazy" />
+          <figcaption>{{ p.split('/')[-1] }}</figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

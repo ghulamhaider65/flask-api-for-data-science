@@ -126,20 +126,9 @@ flask_data_insight_api/
 
 ---
 
-## 📤 Push to GitHub
-```bash
-git init
-git add .
-git commit -m "Initial commit: AI-Powered Data Insight API"
-git remote add origin https://github.com/Haider6565/Fast-api-in-data-science.git
-git branch -M main
-git push -u origin main
-```
-
----
 
 ## 👤 Author
-Portfolio project by Haider6565
+Portfolio project by ghulamhaider65
 
 ---
 Enjoy building with the AI-Powered Data Insight API! 🎉
